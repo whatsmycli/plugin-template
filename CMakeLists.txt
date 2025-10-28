@@ -18,25 +18,26 @@ add_library(${PROJECT_NAME} SHARED
 )
 
 # Platform-specific configuration
+# whatsmycli expects: linux.so, windows.dll, macos.dylib
 if(LINUX)
-    # Linux: .so file
+    # Linux: linux.so
     set_target_properties(${PROJECT_NAME} PROPERTIES
         PREFIX ""
-        OUTPUT_NAME "${PROJECT_NAME}"
+        OUTPUT_NAME "linux"
         SUFFIX ".so"
     )
 elseif(WIN32)
-    # Windows: .dll file
+    # Windows: windows.dll
     set_target_properties(${PROJECT_NAME} PROPERTIES
         PREFIX ""
-        OUTPUT_NAME "${PROJECT_NAME}"
+        OUTPUT_NAME "windows"
         SUFFIX ".dll"
     )
 elseif(APPLE)
-    # macOS: .dylib file
+    # macOS: macos.dylib
     set_target_properties(${PROJECT_NAME} PROPERTIES
-        PREFIX "lib"
-        OUTPUT_NAME "${PROJECT_NAME}"
+        PREFIX ""
+        OUTPUT_NAME "macos"
         SUFFIX ".dylib"
     )
 endif()
@@ -69,12 +70,12 @@ message(STATUS "Building plugin: ${PROJECT_NAME}")
 message(STATUS "Plugin version: ${PROJECT_VERSION}")
 if(LINUX)
     message(STATUS "Platform: Linux")
-    message(STATUS "Output: ${PROJECT_NAME}.so")
+    message(STATUS "Output: linux.so")
 elseif(WIN32)
     message(STATUS "Platform: Windows")
-    message(STATUS "Output: ${PROJECT_NAME}.dll")
+    message(STATUS "Output: windows.dll")
 elseif(APPLE)
     message(STATUS "Platform: macOS")
-    message(STATUS "Output: lib${PROJECT_NAME}.dylib")
+    message(STATUS "Output: macos.dylib")
 endif()
 
