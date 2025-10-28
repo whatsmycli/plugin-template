@@ -166,6 +166,76 @@ extern "C" {
 }
 ```
 
+## Testing Your Plugin
+
+### Local Testing
+
+After building your plugin, test it locally before submitting:
+
+**Option 1: Using WHATSMY_PLUGIN_DIR**
+
+```bash
+# Create test directory structure
+mkdir -p test-plugins/myplugin
+
+# Copy your built plugin
+cp build/myplugin.so test-plugins/myplugin/linux.so
+
+# Test with environment variable
+export WHATSMY_PLUGIN_DIR=$(pwd)/test-plugins
+whatsmy myplugin
+```
+
+**Option 2: Install to system plugins directory**
+
+```bash
+# Linux
+sudo mkdir -p /usr/lib/whatsmy/plugins/myplugin
+sudo cp build/myplugin.so /usr/lib/whatsmy/plugins/myplugin/linux.so
+whatsmy myplugin
+
+# Windows (as Administrator)
+New-Item -ItemType Directory -Force -Path "C:\Program Files\whatsmy\plugins\myplugin"
+Copy-Item build\Release\myplugin.dll "C:\Program Files\whatsmy\plugins\myplugin\windows.dll"
+whatsmy myplugin
+
+# macOS
+sudo mkdir -p /usr/local/lib/whatsmy/plugins/myplugin
+sudo cp build/libmyplugin.dylib /usr/local/lib/whatsmy/plugins/myplugin/macos.dylib
+whatsmy myplugin
+```
+
+### Testing Checklist
+
+Before submitting your plugin, verify:
+
+- [ ] Plugin compiles cleanly on all platforms (or at least one)
+- [ ] No compiler warnings
+- [ ] Returns 0 on success
+- [ ] Returns non-zero on error conditions
+- [ ] Handles exceptions gracefully
+- [ ] No memory leaks (use valgrind on Linux)
+- [ ] Output is clear and user-friendly
+- [ ] Works with whatsmy core application
+
+### Debugging Tips
+
+**Enable Debug Logging**:
+```bash
+export WHATSMY_DEBUG=1
+whatsmy myplugin
+```
+
+**Check for Memory Leaks (Linux)**:
+```bash
+valgrind --leak-check=full whatsmy myplugin
+```
+
+**Platform-Specific Issues**:
+- Linux: Check library dependencies with `ldd myplugin.so`
+- Windows: Use Dependency Walker to check DLL dependencies
+- macOS: Use `otool -L libmyplugin.dylib` to check dependencies
+
 ## Best Practices
 
 - Keep it simple
@@ -173,11 +243,33 @@ extern "C" {
 - Handle errors gracefully
 - Return 0 on success, non-zero on error
 - Test on all platforms before submitting
+- Write clear, user-friendly output
+- Document any special requirements
+- Include examples in your README
+
+## Contributing
+
+We welcome plugin contributions! To submit your plugin:
+
+1. **Develop**: Create your plugin using this template
+2. **Test**: Build and test on at least one platform
+3. **Document**: Write a clear README explaining what your plugin does
+4. **Publish**: Host your source code on GitHub (or similar)
+5. **Submit**: Create a PR to the [plugins repository](https://github.com/whatsmycli/plugins)
+
+Include in your PR:
+- Plugin name and description
+- Link to source code repository
+- Platform-specific binaries (linux.so, windows.dll, macos.dylib)
+- Any special requirements or dependencies
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines.
 
 ## Resources
 
 - [whatsmy](https://github.com/whatsmycli/whatsmy) - Main project
 - [plugins](https://github.com/whatsmycli/plugins) - Plugin repository
+- [plugin-gpu](https://github.com/whatsmycli/plugin-gpu) - Reference implementation
 
 ## License
 
