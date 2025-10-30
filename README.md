@@ -80,36 +80,34 @@ extern "C" {
 
 That's it! Keep it simple.
 
+## Pre-Built Binaries
+
+**GitHub Releases** contain pre-built binaries for all platforms:
+
+- Download from the [Releases page](https://github.com/whatsmycli/plugin-template/releases)
+- Available platforms: Linux (x86_64), Windows (x64), macOS (Universal Binary)
+- Includes SHA256 checksums for verification
+
 ## Building for All Platforms
 
-### GitHub Actions (Recommended)
+### GitHub Actions (Automated Builds) ✅
 
-Create `.github/workflows/build.yml`:
+This repository includes GitHub Actions workflows that automatically build the plugin for all platforms:
 
-```yaml
-name: Build Plugin
-on: [push, pull_request]
-jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    steps:
-    - uses: actions/checkout@v3
-    - name: Configure
-      run: cmake -B build
-    - name: Build
-      run: cmake --build build --config Release
-    - name: Upload
-      uses: actions/upload-artifact@v3
-      with:
-        name: plugin-${{ matrix.os }}
-        path: |
-          build/*.so
-          build/*.dll
-          build/*.dylib
-          build/Release/*.dll
+- **Build Workflow** (`.github/workflows/build.yml`): Runs on every push/PR
+  - Builds for Linux, Windows, and macOS
+  - Uploads artifacts for testing (90-day retention)
+  
+- **Release Workflow** (`.github/workflows/release.yml`): Runs on version tags
+  - Creates GitHub Release automatically
+  - Includes binaries for all platforms
+  - Generates SHA256 checksums
+
+**To create a release:**
+```bash
+git tag -a v1.0.0 -m "Release 1.0.0"
+git push origin v1.0.0
+# GitHub Actions will build and publish automatically!
 ```
 
 ## Submitting
