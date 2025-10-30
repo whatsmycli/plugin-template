@@ -52,10 +52,12 @@ cmake ..
 cmake --build . --config Release
 ```
 
+**Cross-platform builds:** This template includes GitHub Actions workflows that automatically build your plugin for all platforms when you push code. Check `.github/workflows/` for the automation.
+
 ## Submit Your Plugin
 
-1. Build for Linux, Windows, and macOS
-2. Push source code to GitHub
+1. Push source code to GitHub (workflows will build for all platforms automatically)
+2. Download binaries from GitHub Actions artifacts
 3. Submit PR to [plugins repository](https://github.com/whatsmycli/plugins)
 
 See [plugin API docs](https://github.com/whatsmycli/docs) for advanced features.
