@@ -35,6 +35,27 @@ extern "C" {
 }
 ```
 
+**Return codes:**
+- `0` = Success
+- `1` = General error
+- `2+` = Custom error codes
+
+**Error handling & platform detection:** See `plugin.cpp` for complete examples.
+
+## Debugging
+
+Enable verbose output to troubleshoot your plugin:
+
+```bash
+export WHATSMY_DEBUG=1
+whatsmy myplugin
+```
+
+Or use the debug flag:
+```bash
+whatsmy --debug myplugin
+```
+
 ## Build
 
 **Linux/macOS:**
@@ -59,8 +80,6 @@ cmake --build . --config Release
 1. Push source code to GitHub (workflows will build for all platforms automatically)
 2. Download binaries from GitHub Actions artifacts
 3. Submit PR to [plugins repository](https://github.com/whatsmycli/plugins)
-
-See [plugin API docs](https://github.com/whatsmycli/docs) for advanced features.
 
 ## License
 
