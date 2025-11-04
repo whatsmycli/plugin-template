@@ -27,8 +27,15 @@ whatsmy myplugin
 One function with argument support. That's it.
 
 ```cpp
+// Windows DLL export macro (required for Windows compatibility)
+#ifdef _WIN32
+    #define WHATSMY_PLUGIN_EXPORT __declspec(dllexport)
+#else
+    #define WHATSMY_PLUGIN_EXPORT
+#endif
+
 extern "C" {
-    int plugin_run(int argc, char* argv[]) {
+    WHATSMY_PLUGIN_EXPORT int plugin_run(int argc, char* argv[]) {
         // Your code here
         // argv[0] = plugin name
         // argv[1+] = additional arguments
@@ -41,6 +48,8 @@ extern "C" {
     }
 }
 ```
+
+**Important for Windows**: The `WHATSMY_PLUGIN_EXPORT` macro is required on Windows to export the `plugin_run` symbol from your DLL. Without it, whatsmy won't be able to find your plugin function. On Linux/macOS, the macro expands to nothing (symbols are exported by default).
 
 **Example usage:**
 ```bash
