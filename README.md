@@ -24,15 +24,29 @@ whatsmy myplugin
 
 ## Plugin API
 
-One function. That's it.
+One function with argument support. That's it.
 
 ```cpp
 extern "C" {
-    int plugin_run() {
+    int plugin_run(int argc, char* argv[]) {
         // Your code here
+        // argv[0] = plugin name
+        // argv[1+] = additional arguments
+        
+        if (argc >= 2) {
+            std::cout << "Hello, " << argv[1] << "!" << std::endl;
+        }
+        
         return 0;  // 0 = success, non-zero = error
     }
 }
+```
+
+**Example usage:**
+```bash
+whatsmy example          # argc=1, argv[0]="example"
+whatsmy example John     # argc=2, argv[0]="example", argv[1]="John"
+whatsmy example foo bar  # argc=3, argv[0]="example", argv[1]="foo", argv[2]="bar"
 ```
 
 **Return codes:**

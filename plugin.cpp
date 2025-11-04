@@ -2,6 +2,7 @@
  * Example Plugin Template for whatsmycli
  * 
  * This is a simple example plugin that demonstrates:
+ * - Plugin API v2 with argument support
  * - Basic plugin_run() implementation
  * - Platform detection
  * - Error handling
@@ -65,22 +66,40 @@ std::string get_system_info() {
 }
 
 /**
- * Plugin entry point
+ * Plugin entry point with argument support (API v2)
  * 
  * This function is called by whatsmy when the plugin is executed.
+ * 
+ * @param argc Number of arguments passed to the plugin
+ * @param argv Array of argument strings
+ *             argv[0] is the plugin name
+ *             argv[1..argc-1] are additional arguments
  * 
  * Return values:
  *   0 = Success
  *   1 = General error
  *   Other non-zero values = Custom error codes
+ * 
+ * Example usage:
+ *   whatsmy example          -> argc=1, argv[0]="example"
+ *   whatsmy example John     -> argc=2, argv[0]="example", argv[1]="John"
+ *   whatsmy example foo bar  -> argc=3, argv[0]="example", argv[1]="foo", argv[2]="bar"
  */
 extern "C" {
-    int plugin_run() {
+    int plugin_run(int argc, char* argv[]) {
         try {
             // Print plugin information
             std::cout << "==================================" << std::endl;
             std::cout << "  Example Plugin for whatsmycli  " << std::endl;
+            std::cout << "  API Version: 2.0 (with args)  " << std::endl;
             std::cout << "==================================" << std::endl;
+            std::cout << std::endl;
+            
+            // Display arguments received
+            std::cout << "Arguments received: " << argc << std::endl;
+            for (int i = 0; i < argc; i++) {
+                std::cout << "  argv[" << i << "] = " << argv[i] << std::endl;
+            }
             std::cout << std::endl;
             
             // Show platform information
@@ -88,9 +107,13 @@ extern "C" {
             std::cout << "System:   " << get_system_info() << std::endl;
             std::cout << std::endl;
             
-            // Example: Show a simple message
-            std::cout << "This is a template plugin!" << std::endl;
-            std::cout << "Replace this code with your own implementation." << std::endl;
+            // Example: Greet user if name is provided as argument
+            if (argc >= 2) {
+                std::cout << "Hello to you too, " << argv[1] << "!" << std::endl;
+            } else {
+                std::cout << "Hello, World!" << std::endl;
+                std::cout << "Try: whatsmy example YourName" << std::endl;
+            }
             std::cout << std::endl;
             
             // Example: Demonstrate error handling
@@ -110,4 +133,3 @@ extern "C" {
         }
     }
 }
-
