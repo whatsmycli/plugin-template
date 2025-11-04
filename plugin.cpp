@@ -85,8 +85,16 @@ std::string get_system_info() {
  *   whatsmy example John     -> argc=2, argv[0]="example", argv[1]="John"
  *   whatsmy example foo bar  -> argc=3, argv[0]="example", argv[1]="foo", argv[2]="bar"
  */
+
+// Windows DLL export macro
+#ifdef _WIN32
+    #define WHATSMY_PLUGIN_EXPORT __declspec(dllexport)
+#else
+    #define WHATSMY_PLUGIN_EXPORT
+#endif
+
 extern "C" {
-    int plugin_run(int argc, char* argv[]) {
+    WHATSMY_PLUGIN_EXPORT int plugin_run(int argc, char* argv[]) {
         try {
             // Print plugin information
             std::cout << "==================================" << std::endl;
