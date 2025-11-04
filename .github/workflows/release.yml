@@ -176,40 +176,6 @@ jobs:
           - **windows.dll** - Windows plugin (x64)
           - **macos.dylib** - macOS plugin (Universal Binary: Intel + Apple Silicon)
           
-          ## Installation
-          
-          Download the appropriate binary for your platform and copy it to your plugin directory:
-          
-          ### Linux/macOS
-          ```bash
-          # Create plugin directory
-          mkdir -p ~/.local/lib/whatsmy/plugins/example
-          
-          # Download plugin (replace with your platform)
-          wget https://github.com/whatsmycli/plugin-template/releases/download/${{ steps.get_version.outputs.version }}/linux.so
-          
-          # Move to plugin directory
-          mv linux.so ~/.local/lib/whatsmy/plugins/example/
-          
-          # Test it
-          whatsmy example
-          ```
-          
-          ### Windows
-          ```powershell
-          # Create plugin directory
-          New-Item -ItemType Directory -Force -Path "$env:LOCALAPPDATA\whatsmy\plugins\example"
-          
-          # Download plugin
-          Invoke-WebRequest -Uri "https://github.com/whatsmycli/plugin-template/releases/download/${{ steps.get_version.outputs.version }}/windows.dll" -OutFile "windows.dll"
-          
-          # Move to plugin directory
-          Move-Item windows.dll "$env:LOCALAPPDATA\whatsmy\plugins\example\"
-          
-          # Test it
-          whatsmy example
-          ```
-          
           ## Verification
           
           All binaries include SHA256 checksums for verification. See `checksums.txt` or individual `.sha256` files.
